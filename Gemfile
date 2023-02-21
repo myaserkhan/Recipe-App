@@ -9,8 +9,10 @@ gem 'devise'
 # Add cancancan for authorization
 gem 'cancancan'
 
+gem 'dotenv-rails'
+
 # Add bootstrap for styling
-gem 'bootstrap-sass'
+gem 'bootstrap', '~> 5.2'
 
 gem 'rubocop', '>= 1.0', '< 2.0'
 
