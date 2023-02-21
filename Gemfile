@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.3'
+ruby '3.0.4'
 
 # Add devise for authentication
 gem 'devise'
@@ -9,9 +9,13 @@ gem 'devise'
 # Add cancancan for authorization
 gem 'cancancan'
 
-# Add bootstrap for styling
-gem 'bootstrap-sass'
+gem 'dotenv-rails'
 
+# Add bootstrap for styling
+gem 'bootstrap', '~> 5.2'
+gem 'bootstrap_form', '~> 5.1'
+
+# Add rubocop
 gem 'rubocop', '>= 1.0', '< 2.0'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
