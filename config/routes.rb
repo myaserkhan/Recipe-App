@@ -1,13 +1,28 @@
 Rails.application.routes.draw do
-  get '/public_recipes', to:"public_recipes#index" 
-  get '/general_shopping_list', to: "recipes#general_shopping_list"
-  devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
-  root "public_recipes#index"
-  resources :recipes do
-    resources :recipe_foods, only: [:new, :create, :edit, :update, :destroy]
+
+  namespace :api do
+    namespace :v1 do
+      resources :users, only: [:index, :show] do
+        resources :posts, only: [:index] do
+          resources :comments, only: [:index, :create]
+        end
+      end
+    end
   end
-  resources :inventories, only: [:index, :show, :new, :create, :destroy] do
-    resources :inventory_foods, only: [:new, :create, :destroy]
+
+
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
+  }
+  root "users#index"
+
+  resources :users, only: [:index, :show] do
+    resources :posts, only: [:index, :show, :new, :create, :destroy] do
+      resources :comments, only: [:create, :destroy]
+      resources :likes, only: [:create]
+    end
   end
-  resources :foods, only: [:new, :create, :index, :show, :destroy]
+
 end
