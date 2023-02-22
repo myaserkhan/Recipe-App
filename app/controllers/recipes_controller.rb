@@ -3,21 +3,21 @@ class RecipesController < ApplicationController
 
   # GET /recipes or /recipes.json
   def index
+    @user = current_user
     @recipes = current_user.recipes
   end
 
-  # GET /recipes/1 or /recipes/1.json
-  def show
-    @recipe = Recipe.find(params[:id])
-    @recipe_foods = @recipe.recipe_foods
+  def public_recipes
+    @public_recipes = Recipe.includes(:user).all.where(public: true).order(created_at: :desc)
+    # render :public_recipes
   end
+
+  # GET /recipes/1 or /recipes/1.json
+  def show; end
 
   # GET /recipes/new
   def new
     @recipe = Recipe.new
-    respond_to do |format|
-      format.html { render :new, locals: { recipe: @render } }
-    end
   end
 
   # GET /recipes/1/edit
@@ -26,6 +26,7 @@ class RecipesController < ApplicationController
   # POST /recipes or /recipes.json
   def create
     @recipe = Recipe.new(recipe_params)
+    @recipe.user = current_user
 
     respond_to do |format|
       if @recipe.save
@@ -64,10 +65,10 @@ class RecipesController < ApplicationController
   def shopping_list
     @recipe_shopping = Recipe.find(params[:id]).recipe_foods
     @food = []
-    @recipe_shopping.ids.each do |_id|
-      @food.push(Food.find_by(:id))
+    @recipe_shopping.ids.each do |id|
+      @food.push(Food.find_by(id:))
     end
-    @user_food = current_user.foodss
+    @user_food = current_user.food
     @comparison_food = custom_difference(@food, @user_food)
     @food.each do |a|
       puts a.name
@@ -84,21 +85,6 @@ class RecipesController < ApplicationController
     end
   end
 
-  def new_ingredient
-    @recipe = Recipe.find(params[:id])
-    @recipe_food = @recipe.recipe_foods.build
-    @ingredient = RecipeFood.create(recipe_id: params[:recipe_id], food_id: params[:food_id],
-                                    quantity: params[:quantity])
-
-    if @ingredient.save
-      flash[:notice] = 'Ingredient was successfully created.'
-      redirect_to recipe_url(params[:recipe_id])
-    else
-      flash[:alert] = 'Ingredient was not created.'
-      render :new_ingredient
-    end
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -108,33 +94,6 @@ class RecipesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def recipe_params
-    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description,
-                                   :public).merge(user_id: current_user.id)
-  end
-
-  def same_food(_food, _user_food)
-    @comparis_food = []
-    @user_food.each do |uf|
-      @food.each do |rf|
-        next unless uf.name == rf.name
-        next if (uf.quantity - rf.quantity).zero?
-
-        uf.quantity = uf.quantity - rf.quantity
-        @comparis_food.push(uf)
-      end
-    end
-    if @comparis_food.count.zero?
-      0
-    else
-      @comparis_food
-    end
-  end
-
-  def custom_difference(all, subset)
-    all.select do |all_curr|
-      subset.find do |subset_curr|
-        subset_curr.name == all_curr.name
-      end.nil?
-    end
+    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public)
   end
 end

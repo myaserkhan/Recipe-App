@@ -2,10 +2,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    return unless user.present?
-
-    can :destroy, Food, user_id: user.id
-    can :destroy, Recipe, user_id: user.id
+    can :destroy, Food, user
+    can :destroy, Recipe, user
 
     # Define abilities for the user here. For example:
     #
