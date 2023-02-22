@@ -1,12 +1,25 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.3'
+ruby '3.0.4'
+
+# Add devise for authentication
+gem 'devise'
+
+# Add cancancan for authorization
+gem 'cancancan'
+
+gem 'dotenv-rails'
+
+# Add bootstrap for styling
+gem 'bootstrap', '~> 5.2'
+gem 'bootstrap_form', '~> 5.1'
+
+# Add rubocop
+gem 'rubocop', '>= 1.0', '< 2.0'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.0.4'
-
-gem 'rubocop', '>= 1.0', '< 2.0'
+gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
@@ -51,12 +64,12 @@ gem 'bootsnap', require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  gem 'pry'
+  gem 'rails-controller-testing'
+  gem 'rspec-rails'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mingw x64_mingw]
-  gem 'rspec-rails', '>= 3.9.0'
 end
-
-gem 'rails-controller-testing'
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
@@ -75,8 +88,3 @@ group :test do
   gem 'selenium-webdriver'
   gem 'webdrivers'
 end
-
-gem 'bootstrap', '~> 5.1.3'
-gem 'bootstrap_form', '~> 5.1'
-gem 'cancancan'
-gem 'devise'
