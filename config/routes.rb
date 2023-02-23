@@ -3,9 +3,7 @@ Rails.application.routes.draw do
   resources :recipes
   get '/general_shopping_list', to: "recipes#general_shopping_list"
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
-  # root "foods#index"
   root "public_recipes#index"
-
   resources :recipes, only: [:index, :show, :new, :create] do
     resources :recipe_foods, only: [:new, :create, :edit, :update, :destroy]
   end
@@ -15,4 +13,3 @@ Rails.application.routes.draw do
   resources :foods, only: [:new, :create, :index, :show, :destroy]
   get '/shopping_list', to: 'shopping_list#index', as: :shopping_list, recipe_id: /[0-9]+/, inventory_id: /[0-9]+/
 end
-
