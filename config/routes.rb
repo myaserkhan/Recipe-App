@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   get '/public_recipes', to:"public_recipes#index" 
+  resources :recipes
   get '/general_shopping_list', to: "recipes#general_shopping_list"
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
+  # root "foods#index"
   root "public_recipes#index"
+
   resources :recipes, only: [:index, :show, :new, :create] do
     resources :recipe_foods, only: [:new, :create, :edit, :update, :destroy]
   end
@@ -12,3 +15,4 @@ Rails.application.routes.draw do
   resources :foods, only: [:new, :create, :index, :show, :destroy]
   resources :shopping_list, only: [:index]
 end
+

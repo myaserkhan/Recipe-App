@@ -9,11 +9,15 @@ gem 'devise'
 # Add cancancan for authorization
 gem 'cancancan'
 
-# Add bootstrap for styling
-gem 'bootstrap-sass'
+gem 'dotenv-rails'
 
+# Add bootstrap for styling
+gem 'bootstrap', '~> 5.2'
 gem 'bootstrap_form', '~> 5.1'
+
+# Add rubocop
 gem 'rubocop', '>= 1.0', '< 2.0'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
 
