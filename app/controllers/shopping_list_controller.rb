@@ -14,7 +14,7 @@ class ShoppingListController < ApplicationController
         @missing_foods << {
           name: food.name,
           quantity: recipe_food.quantity,
-          price: food.price
+          price: food.price * recipe_food.quantity
         }
         @total_food_price += food.price * recipe_food.quantity
       elsif inventory_food.quantity < recipe_food.quantity
